@@ -1,0 +1,2 @@
+项目使用的Chrome Driver版本已经和现在浏览器的版本不一致了，需用重新下载与本地chrome浏览器版本一致的ChromeDriver。
+下载的地址：http://chromedriver.storage.googleapis.com/index.html
