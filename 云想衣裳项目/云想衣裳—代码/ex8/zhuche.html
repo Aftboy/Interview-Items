@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>用户注册！</title> 
+<script type="text/javascript" src="./jq/jquery-3.1.1.min.js"></script>
+<script> 
+function check_username(){ 
+var username;       
+username = document.getElementById('username').value;      
+username = username.Trim();          
+}
+function check_pass(){ 
+var pass;  
+pass = document.getElementById('pass').value; 
+pass = pass.Trim(); 
+} 
+function mobile(){
+    var mobile;
+    mobile = document.getElementById('mobile').value;
+    mobile = mobile.Trim();
+ }
+function check(){   //合法性验证
+   //检验输入的值是否合法，代码略
+   alert ("你可以注册了!");  
+   $('#reg').removeAttr("disabled");  
+}
+</script> 
+</head>
+<body>
+<form name="form_login" id="form_login" method="post" action="./zhuce.php" 
+onsubmit="return login_check();">
+ <ul>
+     <li> <font size="6"><b> 欢迎注册本网站 </b></font> </li>
+     <li> <td>用户名:</td><input id="username" name="username" type="text" 
+class="_input" onblur="check_username()" /> </li>
+     <li> <td>密码:</td><input id="pass" name="password" type="password"
+ class="_input" onblur="check_pass()" /> </li>
+     <li> <td>邮箱:</td><input id="email" name="email" type="text" class="_input" 
+onblur="check_email()" />  </li>
+     <li> <td>手机号码:</td><input id="mobile" name="mobile" type="text" 
+class="_input" onblur="mobile()"/> </li>
+     <li> <td>性别:  </td>
+     <td>男<input type="radio" checked="checked" name="usersex" value="男" 
+style="width:20px;height:20px"/>女<input type="radio" name="usersex"
+value="女" style="width:20px;height:20px" />
+     </td></li>
+  </ul>
+    <div style="clear:both;margin-left:10px;margin-top:10px;">
+	<input type="button" value="合法性验证" onclick="check()">
+	<input type="submit" name="reg" id="reg"  value="注 册"><!-- disabled="true" -->
+   </div>
+</form>
+ </body>
+ </html>

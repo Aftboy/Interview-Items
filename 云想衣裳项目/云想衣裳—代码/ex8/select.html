@@ -1,0 +1,375 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="./jq/jquery-3.1.1.min.js"></script>
+  <style type="text/css">
+	.back{background-image:url("image/back.png"); width:1182px; height:842px;overflow:hidden;}
+	.man{position:relative;left:0px;top:600px;}
+	.wenzi{position:absolute;left:-200px;top:200px; display:block;}
+	.list{position:relative; width:160px; height:620px; left:1210px;top:100px; display:block;}
+	.sitemlist{position:absolute; left:10px; top:40px; width:160px; height:620px; display:block; overflow:hidden;}
+	.xitemlist{position:absolute; left:10px; top:40px; width:160px; height:620px; display:none; overflow:hidden;}
+	.witemlist{position:absolute; left:10px; top:40px; width:160px; height:620px; display:none; overflow:hidden;}
+	.vintage{color: transparent;background-color : black;text-shadow : rgba(255,255,255,0.5) 0 5px 6px, rgba(255,255,255,0.2) 1px 3px 3px;-webkit-background-clip : text;font-size:50px}
+	.button.yellow{border:1px solid #d2a000;box-shadow: 0 1px 2px #fedd71 inset,0 -1px 0 #a38b39 inset,0 -2px 3px #fedd71 inset;background: -webkit-linear-gradient(top,#fece34,#d8a605);background: -moz-linear-gradient(top,#fece34,#d8a605);background: linear-gradient(top,#fece34,#d8a605);
+}  
+  </style>
+  <script>
+	var map={
+    s1:'102',s2:'120',s3:'110',s4:'180',s5:'198',x1:'80',x2:'92',x3:'110',x4:'99',x5:'105',w1:'210',w2:'189',w3:'250',w4:'199',w5:'168'
+};
+	var ismove = "false";
+	var listischange = "false";
+	var movecount=0;
+	var itemtype="shangyi";
+	var timer;
+	var canmove="true";
+	var listchangetype=0;
+	var seletedshangyi="null";
+	var seletedwaitao="null";
+	var seletedxiayi="null";
+    function tietu(type,count)
+	{
+	
+	 var oImg = document.getElementById(type);
+	  var srcsring= "";
+	  srcsring+="image/";
+	  srcsring+=count;
+	  srcsring+=".png"
+	  oImg.src = srcsring;
+	  if(type=="shangyi")
+	  {
+		var str="您选择的T恤为:";
+		str+=document.getElementById(count).title;
+		str+="  ￥:"
+		str+=map[count];
+		$('h2').html(str);
+		seletedshangyi=count;
+		var price=0;
+		if(seletedshangyi!="null")
+		{
+			price+=parseInt(map[seletedshangyi]);
+		}
+		if(seletedwaitao!="null")
+		{
+			price+=parseInt(map[seletedwaitao]);
+		}
+		if(seletedxiayi!="null")
+		{
+			price+=parseInt(map[seletedxiayi]);
+		}
+		var pricestr="总计为￥: ";
+		pricestr+=price;
+		$('h5').html(pricestr);
+	  }
+	  else if(type=="waitao")
+	  {
+		var str="您选择的外套为:";
+		str+=document.getElementById(count).title;
+		str+="  ￥:"
+		str+=map[count];
+		$('h3').html(str);
+		seletedwaitao=count;
+		var price=0;
+		if(seletedshangyi!="null")
+		{
+			price+=parseInt(map[seletedshangyi]);
+		}
+		if(seletedwaitao!="null")
+		{
+			price+=parseInt(map[seletedwaitao]);
+		}
+		if(seletedxiayi!="null")
+		{
+			price+=parseInt(map[seletedxiayi]);
+		}
+		var pricestr="总计为￥: ";
+		pricestr+=price;
+		$('h5').html(pricestr);
+	  }
+	  else if(type=="xiayi")
+	  {
+		var str="您选择的裤子为:";
+		str+=document.getElementById(count).title;
+		str+="  ￥:"
+		str+=map[count];
+		$('h4').html(str);
+		seletedxiayi=count;
+		var price=0;
+		if(seletedshangyi!="null")
+		{
+			price+=parseInt(map[seletedshangyi]);
+		}
+		if(seletedwaitao!="null")
+		{
+			price+=parseInt(map[seletedwaitao]);
+		}
+		if(seletedxiayi!="null")
+		{
+			price+=parseInt(map[seletedxiayi]);
+		}
+		var pricestr="总计为￥: ";
+		pricestr+=price;
+		$('h5').html(pricestr);
+	  }
+	}
+	function deletetietu()
+	{
+		seletedshangyi="null";
+		seletedwaitao="null";
+		seletedxiayi="null";
+		document.getElementById("shangyi").src="";
+		document.getElementById("waitao").src="";
+		document.getElementById("xiayi").src="";
+		$('h2').html("您没有选择T恤");
+		$('h3').html("您没有选择外套");
+		$('h4').html("您没有选择裤子");
+		$('h5').html("总计为￥: 0");
+	}
+	function changetype(type)
+	{
+		if(itemtype!=type)
+		{
+			if(listischange=="false")
+			{
+			listischange="true";
+			
+			timer2=window.setInterval(function changelist()
+				{
+					var left=parseInt($(".list").css("left"));
+					if(listchangetype==0)
+					{
+						left+=5;
+					}
+					else
+					{
+						left-=5;
+					}
+					if(left>=1210)
+					{
+						listchangetype=1;
+						//hideico(itemtype,"true");
+						if(itemtype=="shangyi")
+							$(".sitemlist").css("display","none");
+						else if(itemtype=="xiayi")
+						{
+							$(".xitemlist").css("display","none");
+						}
+						else
+						{
+							$(".witemlist").css("display","none");
+						}
+						itemtype=type;
+						if(itemtype=="shangyi")
+							$(".sitemlist").css("display","block");
+						else if(itemtype=="xiayi")
+						{
+							$(".xitemlist").css("display","block");
+						}
+						else
+						{
+							$(".witemlist").css("display","block");
+						}
+						//hideico("xiayi","false");
+					}
+					else if(left<=1000)
+					{	
+						left=1000;
+						listchangetype=0;
+						listischange="false";
+						clearTimeout(timer2)
+					}
+					$(".list").css("left",left);
+				},5);
+			}
+		}
+	}
+	
+	function moveanimation(fangxiang)
+	{
+		if(ismove=="false")
+		{
+			ismove= "true";
+			timer=window.setInterval(function move()
+				{
+				if(itemtype=="shangyi")
+				{
+					moveone("s1",fangxiang);
+					moveone("s2",fangxiang);
+					moveone("s3",fangxiang);
+					moveone("s4",fangxiang);
+					moveone("s5",fangxiang);
+				}
+				else if(itemtype=="waitao")
+				{
+					moveone("w1",fangxiang);
+					moveone("w2",fangxiang);
+					moveone("w3",fangxiang);
+					moveone("w4",fangxiang);
+					moveone("w5",fangxiang);
+				}
+				else if(itemtype=="xiayi")
+				{
+					moveone("x1",fangxiang);
+					moveone("x2",fangxiang);
+					moveone("x3",fangxiang);
+					moveone("x4",fangxiang);
+					moveone("x5",fangxiang);
+				}
+				movecount+=5;
+					if(movecount>=245)
+					{
+						movecount=0;
+						clearTimeout(timer)
+						ismove="false";
+					}
+						//document.getElementById("s1").style.top+="5";
+						//document.getElementById("s2").style.top+="5";
+						//document.getElementById("s3").style.top+="5";
+						//document.getElementById("s4").style.top+="5";
+						//document.getElementById("s5").style.top+="5";
+				},5);
+		}
+	}
+	function moveone(moveimg,fangxiang)
+	{
+		var oImg = document.getElementById(moveimg);
+		var top;
+		if(fangxiang=="down")
+		{
+		top=parseInt(oImg.style.top)+parseInt(-5);
+		}
+		else
+		{
+		top=parseInt(oImg.style.top)+parseInt(5);
+		}
+		if(parseInt(top)<=-735||parseInt(top)>=245)
+		{
+			canmove="false";
+		}
+		else
+		{
+			canmove="true";
+		}
+		if(canmove=="true")
+		{
+			top+="px";
+			oImg.style.top = top;
+		}
+	}
+	function load()
+	{
+		var top=parseInt($(".man").css("top"));
+		 timer3=window.setInterval(function startmove(){
+			top+=(-5);
+			if(top<=0)
+			{
+				clearTimeout(timer3);
+			}
+			$(".man").css("top",top)
+		},4)
+		var wenzileft=parseInt($(".wenzi").css("left"));
+		 timer4=window.setInterval(function startmove(){
+			wenzileft+=5;
+			if(wenzileft>=70)
+			{
+				clearTimeout(timer4);
+			}
+			$(".wenzi").css("left",wenzileft)
+		},6)
+		var listleft=parseInt($(".list").css("left"));
+		 timer5=window.setInterval(function startmove(){
+			listleft+=(-2);
+			if(listleft<=1000)
+			{
+				clearTimeout(timer5);
+			}
+			$(".list").css("left",listleft)
+		},1)
+	}
+	function pay()
+	{
+		var price=0;
+		if(seletedshangyi!="null")
+		{
+			price+=parseInt(map[seletedshangyi]);
+		}
+		if(seletedwaitao!="null")
+		{
+			price+=parseInt(map[seletedwaitao]);
+		}
+		if(seletedxiayi!="null")
+		{
+			price+=parseInt(map[seletedxiayi]);
+		}
+		if(price==0)
+		{
+			alert("您还么有选择衣服");
+		}
+		else
+		{
+			window.location.href='pay.html?sid='+GetQueryString("sid")+'&price='+price;
+		}
+	}
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+  </script>
+</head>
+ <body onload="load()">
+     <div class="back">
+		<div class="wenzi">
+			 <h1 class="vintage" style="font-size:55px">在线试衣间</h1>
+			 <h1 class="vintage" style="font-size:24px">请选择你需要的服装</h1>
+			 <h2 class="vintage" style="font-size:24px">您没有选择T恤</h1>
+			 <h3 class="vintage" style="font-size:24px">您没有选择外套</h1>
+			 <h4 class="vintage" style="font-size:24px">您没有选择裤子</h1>
+			 <h5 class="vintage" style="font-size:24px">总计为￥: 0</h1>
+			 <button type="button"  style=" font-size:15pt; width:180px; height:50px;"  class="button yellow"  onclick="pay()">点击购买</button>  
+		</div>
+		 <div class="man">
+			<img src="image/yinzi.png"; width="230px"; height="80px"; style="position:absolute; left:490px; top:760px; ">
+			<img src="image/man.png"; style="position:absolute; left:500px; top:250px; ">
+			<img id="xiayi" src=""; style="position:absolute; left:500px; top:250px; ">
+			<img id="shangyi" src=""; style="position:absolute; left:500px; top:250px; ">
+			<img id="waitao" src=""; style="position:absolute; left:500px; top:250px; ">
+			<img src="image/shangyi.png"; style="position:absolute; left:930px; top:250px; " onclick="changetype('shangyi')">
+			<img src="image/waitao.png"; style="position:absolute; left:930px; top:400px; " onclick="changetype('waitao')">
+			<img src="image/xiayi.png"; style="position:absolute; left:930px; top:550px; " onclick="changetype('xiayi')">
+			<img src="image/delete.png";width="50px"; height="60px"; style="position:absolute; left:935px; top:700px; " onclick="deletetietu()">
+		 </div>
+		 <div class="list">
+			<img src="image/list.png">
+				<div class="sitemlist">
+					<img id="s1" src="image/s1m.jpg"; width="160px"; Title="短袖T恤1"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('shangyi','s1')">
+					<img id="s2" src="image/s2m.jpg"; width="160px"; Title="短袖T恤2"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('shangyi','s2')">
+					<img id="s3" src="image/s3m.jpg"; width="160px"; Title="短袖T恤3"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('shangyi','s3')">
+					<img id="s4" src="image/s4m.jpg"; width="160px"; Title="短袖T恤4"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('shangyi','s4')">
+					<img id="s5" src="image/s5m.jpg"; width="160px"; Title="短袖T恤5"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('shangyi','s5')">
+				</div>
+				<div class="xitemlist">
+					<img id="x1" src="image/x1m.jpg"; width="160px"; Title="短裤1"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('xiayi','x1')">
+					<img id="x2" src="image/x2m.jpg"; width="160px"; Title="短裤2"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('xiayi','x2')">
+					<img id="x3" src="image/x3m.jpg"; width="160px"; Title="短裤3"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('xiayi','x3')">
+					<img id="x4" src="image/x4m.jpg"; width="160px"; Title="短裤4"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('xiayi','x4')">
+					<img id="x5" src="image/x5m.jpg"; width="160px"; Title="短裤5"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('xiayi','x5')">
+				</div>
+				<div class="witemlist">
+					<img id="w1" src="image/w1m.jpg"; width="160px"; Title="秋季外套"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('waitao','w1')">
+					<img id="w2" src="image/w2m.jpg"; width="160px"; Title="单排扣风衣"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('waitao','w2')">
+					<img id="w3" src="image/w3m.jpg"; width="160px"; Title="秋季单西外套"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('waitao','w3')">
+					<img id="w4" src="image/w4m.jpg"; width="160px"; Title="休闲西服"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('waitao','w4')">
+					<img id="w5" src="image/w5m.jpg"; width="160px"; Title="针织外套"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " onclick="tietu('waitao','w5')">
+				</div>
+				<div class="updown">
+					<img src="image/jianhao2.png"; width="160px"; height="30px"; style="cursor:pointer; position:relative; left:10px; top:-695px; " onclick="moveanimation('up')">
+					<img src="image/jianhao1.png"; width="160px"; height="30px"; style="cursor:pointer; position:relative; left:10px; top:-75px; " onclick="moveanimation('down')">
+				</div>
+		 </div>
+	 </div>
+ </body>
+</html

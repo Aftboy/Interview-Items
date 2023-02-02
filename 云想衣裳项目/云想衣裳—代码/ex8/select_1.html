@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<!-- 简化（4）本例仅考虑上衣情况 + 图片不能上下移动 + 取消动画 + 取消支付 + 取消选择衣服，仅考虑布局-->
+<!-- 例8-1  -->
+ <head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="./jq/jquery-3.1.1.min.js"></script>
+  <style type="text/css">
+	.back{background-image:url("image/back.jpg"); width:1182px; height:842px;overflow:hidden;}
+	.man{position:relative;left:0px;top:0px;}
+	.tongji{position:absolute;left:70px;top:200px; display:block;}
+	.list{position:relative; width:160px; height:620px; left:1000px;top:100px; display:block;}
+	.sitemlist{position:absolute; left:10px; top:40px; width:160px; height:620px; display:block; overflow:hidden;}
+  </style>
+ 
+</head>
+ <body>
+   <div class="tongji"><!-- 定义统计选择情况 -->
+	 <h1 class="vintage" style="font-size:55px">在线试衣间</h1>
+	 <h1 class="vintage" style="font-size:24px">请选择你需要的服装</h1>
+	 <h2 class="vintage" style="font-size:24px">您没有选择T恤</h1>
+	 <h5 class="vintage" style="font-size:24px">总计为￥: 0</h1>
+   </div>
+
+   <div class="man"><!-- 定义模特 -->
+	 <img src="image/yinzi.png"; width="230px"; height="80px"; style="position:absolute; left:490px; top:760px; ">
+	 <img src="image/man.png"; style="position:absolute; left:500px; top:250px; ">
+	 <img id="shangyi" src=""; style="position:absolute; left:500px; top:250px; ">
+	 <img src="image/shangyi.png"; style="position:absolute; left:930px; top:250px; ">
+	 <img src="image/delete.png";width="50px"; height="60px"; style="position:absolute; left:935px; top:700px; ">
+   </div>
+
+   <div class="list"><!-- 定义衣服序列 -->
+ 	 <img src="image/list.png">
+		<div class="sitemlist">
+			<img id="s1" src="image/s1m.jpg"; width="160px"; Title="短袖T恤1"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; ">
+			<img id="s2" src="image/s2m.jpg"; width="160px"; Title="短袖T恤2"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; ">
+			<img id="s3" src="image/s3m.jpg"; width="160px"; Title="短袖T恤3"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; ">
+			<img id="s4" src="image/s4m.jpg"; width="160px"; Title="短袖T恤4"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; " >
+			<img id="s5" src="image/s5m.jpg"; width="160px"; Title="短袖T恤5"; height="240px"; style="cursor:pointer; position:relative; left:0px; top:0px; ">
+		</div>
+	 </div>
+ </body>
+</html>
